@@ -1,0 +1,27 @@
+@tenantIdEntra=id_tenant_microsofentraid
+@clientIdAppRegistration=id_appregistration
+@clientSecretAppRegistration=secret_appregistration
+@subscriptionKeyAPIM=subscription_key
+@endpointAPIM=https://resourcename.azure-api.net/apiname/endpoint
+
+###
+
+# @name getToken
+POST https://login.microsoftonline.com/{{tenantIdEntra}}/oauth2/v2.0/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id={{clientIdAppRegistration}}&
+scope=https://graph.microsoft.com/.default&
+client_secret={{clientSecretAppRegistration}}&
+grant_type=client_credentials
+
+###
+
+@token={{getToken.response.body.access_token}}
+
+###
+
+GET {{endpointAPIM}}
+Content-Type: application/json
+Ocp-Apim-Subscription-Key: {{subscriptionKeyAPIM}}
+Authorization: Bearer {{token}}
